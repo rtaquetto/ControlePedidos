@@ -26,7 +26,7 @@ namespace ControlePedidos.Data
                 .HasKey(c => c.Id);
             modelBuilder.Entity<ItemPedido>()
                 .ToTable("tb_item_pedido")
-                .HasKey(ip => new { ip.PedidoId, ip.ProdutoId, ip.Sequencial });
+                .HasKey(ip => ip.Id);
             modelBuilder.Entity<Pedido>()
                 .ToTable("tb_pedido")
                 .HasKey(pe => pe.Id);

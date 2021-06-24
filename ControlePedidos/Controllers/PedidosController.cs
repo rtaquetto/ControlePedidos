@@ -1,4 +1,5 @@
 ﻿using ControlePedidos.Models;
+using ControlePedidos.Models.ViewModels;
 using ControlePedidos.Services;
 using ControlePedidos.Services.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,14 @@ namespace ControlePedidos.Controllers
     public class PedidosController : Controller
     {
         private readonly PedidoService _pedidoService;
+        private readonly ProdutoService _produtoService;
+        private readonly ItemPedidoService _itemPedidoService;
 
-        public PedidosController(PedidoService pedidoService)
+        public PedidosController(PedidoService pedidoService, ProdutoService produtoService, ItemPedidoService itemPedidoService)
         {
             _pedidoService = pedidoService;
+            _produtoService = produtoService;
+            _itemPedidoService = itemPedidoService;
         }
 
         // GET: Pedidos
@@ -102,7 +107,7 @@ namespace ControlePedidos.Controllers
             //return View(produto);
         }
 
-        // GET: Pedidos/Delete/5
+        // GET: Pedidos/Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -120,7 +125,7 @@ namespace ControlePedidos.Controllers
             return View(obj);
         }
 
-        // POST: Pedidos/Delete/5
+        // POST: Pedidos/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -128,5 +133,36 @@ namespace ControlePedidos.Controllers
             await _pedidoService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
+
+
+        // GET: Pedidos/ListItens
+        public async Task<IActionResult> ListItens(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = await _pedidoService.FindByIdAsync(id.Value);
+            var itemPedidos = await _itemPedidoService.FindByPedidoIdAsync(id.Value);
+            //return View(list);
+            var viewModel = new ItemPedido { ItemPedidos = itemPedidos, Pedido = obj };
+            return View(viewModel);
+        }
+
+        //// GET: Pedidos/ListItens
+        //public async Task<IActionResult> ListItens(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var viewModel = new ItemPedidoIndexData();
+        //    viewModel.ItemPedidos = await _itemPedidoService.FindAllAsync();
+        //    var obj = await _pedidoService.FindByIdAsync(id.Value);
+        //    var itemPedidos = await _itemPedidoService.FindByPedidoIdAsync(id.Value);
+        //    //return View(list);
+        //    var viewModel = new ItemPedido { ItemPedidos = itemPedidos, Pedido = obj };
+        //    return View(viewModel);
+    //}
     }
 }

@@ -22,16 +22,26 @@ namespace ControlePedidos.Services
         {
             return await _context.ItemPedido.ToListAsync();
         }
-
         public async Task InsertAsync(ItemPedido obj)
         {
             _context.Add(obj);
             await _context.SaveChangesAsync();
         }
 
+
         public async Task<ItemPedido> FindByIdAsync(int id)
         {
-            return await _context.ItemPedido.Include(obj => obj.Produto).FirstOrDefaultAsync(obj => obj.PedidoId == id);
+            return await _context.ItemPedido.Include(obj => obj.Produto).FirstOrDefaultAsync(obj => obj.Id == id);
+        }
+
+
+        public async Task<List<ItemPedido>> FindByPedidoIdAsync(int id)
+        {
+            return await _context.ItemPedido
+                .Include(obj => obj.Produto)
+                .Include(obj => obj.Pedido)
+                .Where(ip => ip.PedidoId == id)
+                .ToListAsync();
         }
 
         public async Task RemoveAsync(int id)
@@ -43,7 +53,7 @@ namespace ControlePedidos.Services
 
         public async Task UpdateAsync(ItemPedido obj)
         {
-            bool HasAny = await _context.ItemPedido.AnyAsync(x => x.PedidoId == obj.PedidoId);
+            bool HasAny = await _context.ItemPedido.AnyAsync(x => x.Id == obj.Id);
             if (!HasAny)
             {
                 throw new NotFoundException("Item do pedido não encontrado");

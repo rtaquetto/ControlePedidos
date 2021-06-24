@@ -1,8 +1,5 @@
 ﻿@model IEnumerable<ControlePedidos.Models.Pedido>
-
-@{
-    ViewData["Title"] = "Pedidos";
-}
+@{ ViewData["Title"] = "Pedidos"; }
 
 <h2>@ViewData["Title"]</h2>
 
@@ -31,26 +28,27 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValorTotal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Descricao)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a> |
-                <a asp-controller="ItemPedido" asp-action="Index">Adicionar Itens</a>
-            </td>
-        </tr>
-        }
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Data)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ValorTotal)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Descricao)
+    </td>
+    <td>
+        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+        <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
+        <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a> |
+        <a asp-action="ListItens" asp-route-id="@item.Id">Listar Itens</a>
+        @*<a asp-action="AddItem" asp-route-id="@item.Id">Adicionar Itens</a>*@
+        @*<a asp-controller="ItemPedido" asp-action="Index">Adicionar Itens</a>*@
+    </td>
+</tr>}
     </tbody>
 </table>

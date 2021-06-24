@@ -8,6 +8,8 @@ namespace ControlePedidos.Models
 {
     public class ItemPedido
     {
+        [Column("cod_item_pedido")]
+        public int Id { get; set; }
         [Column("nu_qtd_item")]
         public int Quantidade { get; set; }
         [Column("nu_sequencial_pedido")]
@@ -20,21 +22,19 @@ namespace ControlePedidos.Models
         public Produto Produto { get; set; }
         public Pedido Pedido { get; set; }
 
+        public ICollection<ItemPedido> ItemPedidos { get; set; } = new List<ItemPedido>();
+
         public ItemPedido()
         {
         }
 
-        public ItemPedido(int quantidade, int sequencial, Produto produto, Pedido pedido)
+        public ItemPedido(int id, int quantidade, int sequencial, Produto produto, Pedido pedido)
         {
+            Id = id;
             Quantidade = quantidade;
             Sequencial = sequencial;
             Produto = produto;
             Pedido = pedido;
         }
-
-        //public double SubTotal()
-        //{
-        //  return Produto.ValorUnitario * Quantidade;
-        //}
     }
 }

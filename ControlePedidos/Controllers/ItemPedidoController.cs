@@ -14,11 +14,13 @@ namespace ControlePedidos.Controllers
     {
         private readonly ItemPedidoService _itemPedidoService;
         private readonly ProdutoService _produtoService;
+        private readonly PedidoService _pedidoService;
 
-        public ItemPedidoController(ItemPedidoService itemPedidoService, ProdutoService produtoService)
+        public ItemPedidoController(ItemPedidoService itemPedidoService, ProdutoService produtoService, PedidoService pedidoService)
         {
             _itemPedidoService = itemPedidoService;
             _produtoService = produtoService;
+            _pedidoService = pedidoService;
         }
 
         // GET: ItemPedidos
@@ -149,5 +151,32 @@ namespace ControlePedidos.Controllers
         //{
         //    return _produtoService.Any(e => e.Codigo == id);
         //}
+
+
+        // GET: ItemPedidos/AddItem
+        public async Task<IActionResult> AddItem(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var obj = await _pedidoService.FindByIdAsync(id.Value);
+            var produtos = await _produtoService.FindAllAsync();
+            var viewModel = new ItemPedidoFormViewModel { Produtos = produtos, Pedido = obj };
+            return View(viewModel);
+        }
+
+        // POST: ItemPedidos/AddItem
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddItem(ItemPedido itemPedido)
+        {
+            //if (ModelState.IsValid)
+            //{
+            await _itemPedidoService.InsertAsync(itemPedido);
+            return RedirectToAction(nameof(Index));
+            //}
+            //return View(produto);
+        }
     }
 }
