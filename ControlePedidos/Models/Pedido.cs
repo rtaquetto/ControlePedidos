@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ControlePedidos.Models
@@ -16,7 +14,7 @@ namespace ControlePedidos.Models
         public decimal ValorTotal { get; set; }
         [Column("dsc_pedido")]
         public string Descricao { get; set; }
-        public ICollection<ItemPedido> ItemPedidos { get; set; } = new List<ItemPedido>();
+        public ICollection<ItemPedido> ItemPedidos { get; set; }
 
         public Pedido()
         {

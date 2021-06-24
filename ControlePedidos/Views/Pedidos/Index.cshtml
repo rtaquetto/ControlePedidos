@@ -1,10 +1,13 @@
 ﻿@model IEnumerable<ControlePedidos.Models.Pedido>
-@{ ViewData["Title"] = "Pedidos"; }
+
+@{ 
+    ViewData["Title"] = "Pedidos"; 
+}
 
 <h2>@ViewData["Title"]</h2>
 
 <p>
-    <a asp-action="Create" class="btn btn-info">Criar Novo</a>
+    <a asp-action="Create" class="btn btn-info">Novo</a>
 </p>
 
 <table class="table table-striped table-hover">
@@ -44,10 +47,7 @@
     <td>
         <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
         <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
-        <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a> |
-        <a asp-action="ListItens" asp-route-id="@item.Id">Listar Itens</a>
-        @*<a asp-action="AddItem" asp-route-id="@item.Id">Adicionar Itens</a>*@
-        @*<a asp-controller="ItemPedido" asp-action="Index">Adicionar Itens</a>*@
+        <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
     </td>
 </tr>}
     </tbody>

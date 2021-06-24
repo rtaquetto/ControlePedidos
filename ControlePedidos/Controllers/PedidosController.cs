@@ -1,11 +1,7 @@
 ﻿using ControlePedidos.Models;
-using ControlePedidos.Models.ViewModels;
 using ControlePedidos.Services;
 using ControlePedidos.Services.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ControlePedidos.Controllers
@@ -13,14 +9,10 @@ namespace ControlePedidos.Controllers
     public class PedidosController : Controller
     {
         private readonly PedidoService _pedidoService;
-        private readonly ProdutoService _produtoService;
-        private readonly ItemPedidoService _itemPedidoService;
 
-        public PedidosController(PedidoService pedidoService, ProdutoService produtoService, ItemPedidoService itemPedidoService)
+        public PedidosController(PedidoService pedidoService)
         {
             _pedidoService = pedidoService;
-            _produtoService = produtoService;
-            _itemPedidoService = itemPedidoService;
         }
 
         // GET: Pedidos
@@ -87,8 +79,6 @@ namespace ControlePedidos.Controllers
                 return BadRequest();
             }
 
-            //if (ModelState.IsValid)
-            //{
             try
             {
                 await _pedidoService.UpdateAsync(pedido);
@@ -102,9 +92,6 @@ namespace ControlePedidos.Controllers
             {
                 return BadRequest();
             }
-            //return RedirectToAction(nameof(Index));
-            //}
-            //return View(produto);
         }
 
         // GET: Pedidos/Delete
@@ -114,8 +101,6 @@ namespace ControlePedidos.Controllers
             {
                 return NotFound();
             }
-
-            //var produto = await _context.Produto.FirstOrDefaultAsync(m => m.Codigo == id);
             var obj = await _pedidoService.FindByIdAsync(id.Value);
             if (obj == null)
             {
@@ -133,36 +118,5 @@ namespace ControlePedidos.Controllers
             await _pedidoService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
-
-
-        // GET: Pedidos/ListItens
-        public async Task<IActionResult> ListItens(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var obj = await _pedidoService.FindByIdAsync(id.Value);
-            var itemPedidos = await _itemPedidoService.FindByPedidoIdAsync(id.Value);
-            //return View(list);
-            var viewModel = new ItemPedido { ItemPedidos = itemPedidos, Pedido = obj };
-            return View(viewModel);
-        }
-
-        //// GET: Pedidos/ListItens
-        //public async Task<IActionResult> ListItens(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var viewModel = new ItemPedidoIndexData();
-        //    viewModel.ItemPedidos = await _itemPedidoService.FindAllAsync();
-        //    var obj = await _pedidoService.FindByIdAsync(id.Value);
-        //    var itemPedidos = await _itemPedidoService.FindByPedidoIdAsync(id.Value);
-        //    //return View(list);
-        //    var viewModel = new ItemPedido { ItemPedidos = itemPedidos, Pedido = obj };
-        //    return View(viewModel);
-    //}
     }
 }

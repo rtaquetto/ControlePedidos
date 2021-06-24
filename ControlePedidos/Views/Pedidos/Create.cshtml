@@ -1,6 +1,6 @@
 ﻿@model ControlePedidos.Models.Pedido
 @{
-    ViewData["Title"] = "Criar";
+    ViewData["Title"] = "Cadastro de Pedido";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -21,6 +21,11 @@
                 <span asp-validation-for="Data" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="ValorTotal" class="custom-control-label"></label>
+                <input asp-for="ValorTotal" class="form-control" />
+                <span asp-validation-for="ValorTotal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-info" />
             </div>
         </form>
@@ -28,7 +33,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Retornar</a>
+    <a asp-action="Index">Voltar</a>
 </div>
 
 @section Scripts {

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ControlePedidos.Data;
 using ControlePedidos.Models;
 using ControlePedidos.Models.ViewModels;
 using ControlePedidos.Services;
@@ -148,10 +143,5 @@ namespace ControlePedidos.Controllers
             //await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        //private bool ProdutoExists(int id)
-        //{
-        //    return _produtoService.Any(e => e.Codigo == id);
-        //}
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ControlePedidos.Models
@@ -17,7 +14,7 @@ namespace ControlePedidos.Models
         [Column("cod_categoria")]
         public int CategoriaId { get; set; }
         public Categoria Categoria { get; set; }
-        public ICollection<ItemPedido> ItemPedidos { get; set; } = new List<ItemPedido>();
+        public ICollection<ItemPedido> ItemPedidos { get; set; }
 
         public Produto()
         {

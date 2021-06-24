@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ControlePedidos.Models
@@ -12,7 +9,7 @@ namespace ControlePedidos.Models
         public int Id { get; set; }
         [Column("nm_categoria")]
         public string Nome { get; set; }
-        public ICollection<Produto> Produtos { get; set; } = new List<Produto>();
+        public ICollection<Produto> Produtos { get; set; }
 
         public Categoria()
         {
