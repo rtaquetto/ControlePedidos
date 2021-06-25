@@ -1,32 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using ControlePedidos.Data;
 using ControlePedidos.Models;
-using ControlePedidos.Models.ViewModels;
 using ControlePedidos.Services;
+using ControlePedidos.Models.ViewModels;
 using ControlePedidos.Services.Exceptions;
 
 namespace ControlePedidos.Controllers
 {
-    public class ProdutosController : Controller
+    public class ItemPedidosController : Controller
     {
+        private readonly ItemPedidoService _itemPedidoService;
         private readonly ProdutoService _produtoService;
-        private readonly CategoriaService _categoriaService;
 
-        public ProdutosController(ProdutoService produtoService, CategoriaService categoriaService)
+        public ItemPedidosController(ItemPedidoService itemPedidoService, ProdutoService produtoService)
         {
+            _itemPedidoService = itemPedidoService;
             _produtoService = produtoService;
-            _categoriaService = categoriaService;
         }
 
-        // GET: Produtos
+        // GET: ItemPedidos
         public async Task<IActionResult> Index()
         {
-            var list = await _produtoService.FindAllAsync();
+            var list = await _itemPedidoService.FindAllAsync();
             return View(list);
         }
 
-        // GET: Produtos/Details
+        // GET: ItemPedidos/Details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,7 +39,7 @@ namespace ControlePedidos.Controllers
                 return NotFound();
             }
 
-            var obj = await _produtoService.FindByIdAsync(id.Value);
+            var obj = await _itemPedidoService.FindByIdAsync(id.Value);
             if (obj == null)
             {
                 return NotFound();
@@ -43,56 +48,57 @@ namespace ControlePedidos.Controllers
             return View(obj);
         }
 
-        // GET: Produtos/Create
+        // GET: ItemPedidos/Create
         public async Task<IActionResult> Create()
         {
-            var categorias = await _categoriaService.FindAllAsync();
-            var viewModel = new ProdutoFormViewModel { Categorias = categorias };
+            var produtos = await _produtoService.FindAllAsync();
+            var viewModel = new ItemPedidoFormViewModel { Produtos = produtos };
             return View(viewModel);
         }
 
-        // POST: Produtos/Create
+        // POST: ItemPedidos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Produto produto)
+        public async Task<IActionResult> Create(ItemPedido itemPedido)
         {
-                await _produtoService.InsertAsync(produto);
-                return RedirectToAction(nameof(Index));
+            await _itemPedidoService.InsertAsync(itemPedido);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Produtos/Edit
+        // GET: ItemPedidos/Edit
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var obj = await _produtoService.FindByIdAsync(id.Value);
+
+            var obj = await _itemPedidoService.FindByIdAsync(id.Value);
             if (obj == null)
             {
                 return NotFound();
             }
-            List<Categoria> categorias = await _categoriaService.FindAllAsync();
-            ProdutoFormViewModel viewModel = new ProdutoFormViewModel { Produto = obj, Categorias = categorias };
+            List<Produto> produtos = await _produtoService.FindAllAsync();
+            ItemPedidoFormViewModel viewModel = new ItemPedidoFormViewModel { ItemPedido = obj, Produtos = produtos };
             return View(viewModel);
         }
 
-        // POST: Produtos/Edit
+        // POST: ItemPedidos/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Produto produto)
+        public async Task<IActionResult> Edit(int id, ItemPedido itemPedido)
         {
-            if (id != produto.Id)
+            if (id != itemPedido.Id)
             {
-                return BadRequest();
+                return NotFound();
             }
 
             try
             {
-                await _produtoService.UpdateAsync(produto);
+                await _itemPedidoService.UpdateAsync(itemPedido);
                 return RedirectToAction(nameof(Index));
             }
-            catch (NotFoundException)
+            catch (DbUpdateConcurrencyException)
             {
                 return NotFound();
             }
@@ -102,7 +108,7 @@ namespace ControlePedidos.Controllers
             }
         }
 
-        // GET: Produtos/Delete
+        // GET: ItemPedidos/Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -110,7 +116,7 @@ namespace ControlePedidos.Controllers
                 return NotFound();
             }
 
-            var obj = await _produtoService.FindByIdAsync(id.Value);
+            var obj = await _itemPedidoService.FindByIdAsync(id.Value);
             if (obj == null)
             {
                 return NotFound();
@@ -119,12 +125,12 @@ namespace ControlePedidos.Controllers
             return View(obj);
         }
 
-        // POST: Produtos/Delete/5
+        // POST: ItemPedidos/Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
-            await _produtoService.RemoveAsync(id);
+            await _itemPedidoService.RemoveAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

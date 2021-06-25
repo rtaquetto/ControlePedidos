@@ -28,6 +28,7 @@ namespace ControlePedidos
             services.AddScoped<PedidoService>();
             services.AddScoped<ProdutoService>();
             services.AddScoped<CategoriaService>();
+            services.AddScoped<ItemPedidoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

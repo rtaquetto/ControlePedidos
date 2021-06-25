@@ -15,11 +15,9 @@ namespace ControlePedidos.Models
         public int ProdutoId { get; set; }
         [Column("nu_pedido")]
         public int PedidoId { get; set; }
-
         public Produto Produto { get; set; }
         public Pedido Pedido { get; set; }
 
-        public ICollection<ItemPedido> ItemPedidos { get; set; }
 
         public ItemPedido()
         {
